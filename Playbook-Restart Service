@@ -1,0 +1,14 @@
+                                                                                 playbook.yml
+- hosts: all
+  become: yes
+  become_method: su
+  tasks:
+  - name: Stop and Start ssh
+    service:
+      name: ssh
+      state: "{{ item }}"
+    with_items:
+      - stopped
+      - started
+
+
