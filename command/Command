@@ -1,0 +1,1 @@
+ansible all -m copy -a "src=/home/rskabc/asu dest=tmp/"
