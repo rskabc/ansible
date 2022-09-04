@@ -12,7 +12,7 @@
       register: reboot_required_file
       stat: path=/var/run/reboot-required get_md5=no
       
-    - name: Autoremove and clean debian
+    - name: autoremove
       apt:
       autoremove: yes
       purge: yes
