@@ -1,7 +1,7 @@
 - hosts: all
   become: yes
-  become_method: sudo
+  become_method: su
   tasks:
-- name: Remove dependencies that are no longer required
+  - name: Remove dependencies that are no longer required
   apt:
     autoremove: yes
