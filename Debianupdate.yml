@@ -11,7 +11,11 @@
     - name: Check if a reboot is needed on all servers
       register: reboot_required_file
       stat: path=/var/run/reboot-required get_md5=no
-
+      
+    - name: Autoremove and clean debian
+      apt: autoremove: yes
+      purge: yes
+      
     - name: Reboot the box if kernel updated
       reboot:
         msg: "Reboot initiated by Ansible for kernel updates"
