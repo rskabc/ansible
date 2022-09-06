@@ -1,0 +1,24 @@
+- hosts: node 
+
+- name: Download file asu
+
+  tasks:
+ - name: Make directory mysql-server in /tmp/download         
+
+  file:
+
+    path: /tmp/download     
+
+    state: directory        
+
+    mode: 0777      
+
+  - name: proses download file asu    
+
+      get_url:
+
+        url: “https://raw.githubusercontent.com/rskabc/bashscript/main/banner”        
+
+       dest: /tmp/download 
+      mode: 0777
+      checksum: md5:5568e206a187a3b658392520540f556e
