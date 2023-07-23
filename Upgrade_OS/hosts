@@ -1,0 +1,8 @@
+[all:vars]
+ansible_user='root' #set ssh user accordingly
+ansible_become=yes
+ansible_become_method=sudo
+
+[servers]
+159.89.238.38
+192.34.58.254
