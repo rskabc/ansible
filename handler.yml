@@ -1,0 +1,9 @@
+ # handlers:
+    - name: Restart SNMP Service
+      systemd:
+        name: snmpd
+        state: restarted
+    - name: Restart Chrony Service
+      systemd:
+        name: chronyd
+        state: restarted

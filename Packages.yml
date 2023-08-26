@@ -1,23 +1,30 @@
 ---
-- name: Install Packages
-  hosts: target_host  # Ganti dengan nama host atau grup host yang ingin Anda gunakan
-  become: true  # Mengaktifkan hak superuser (sudo) untuk menjalankan perintah
+#- name: Install Packages and Update Repositories
+#  hosts: all
+#  become: true  # Menggunakan hak superuser (sudo)
+#  tasks:
+    - name: Update Repositories
+      yum:
+        name: '*'
+        state: latest
+      tags: update
 
-  tasks:
-    - name: Install epel-release package
+    - name: Install epel-release Package
       yum:
         name: epel-release
         state: present
+      tags: install_epel_release
 
-    - name: Install required packages
+    - name: Install Required Packages
       yum:
-        name: 
+        name:
           - net-snmp
           - net-snmp-utils
           - git
           - wget
           - curl
-          - htop
           - net-tools
-          - ntp
+          - chrony
+          - nano
         state: present
+      tags: install_packages

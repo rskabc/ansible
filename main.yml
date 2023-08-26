@@ -1,11 +1,12 @@
 ---
-- name: Main Playbook
-  hosts: target_hosts
-  become: true
-
+- name: Combined Playbook Packages and Configuration
+  hosts: all
+  gather_facts: true
   tasks:
-    - name: Import Install Playbook
-      import_playbook: Packages.yml
+    - name: Include Packages Tasks
+      include_tasks: Packages.yml
 
-    - name: Import Configuration Playbook
-      import_playbook: Konfigurasi.yml
+    - name: Include Konfigurasi Tasks
+      include_tasks: konfigurasi.yml
+    - name: Include Handler Tasks
+      include_tasks: handler.yml    
