@@ -15,6 +15,23 @@
         state: present
       tags: install_epel_release
 
+    - name: Install Packages SNMPD
+      yum:
+        name:
+          - net-snmp
+          - net-snmp-utils
+        state: present
+      tags: install_packages
+      notify: Restart Service SNMPD
+
+    - name: Install  Packages Chronyd
+      yum:
+        name:
+          - chrony
+        state: present
+      tags: install_packages
+      notify: Restart Service Chronyd
+
     - name: Install Required Packages
       yum:
         name:
