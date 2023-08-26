@@ -1,0 +1,11 @@
+---
+- name: Main Playbook
+  hosts: target_hosts
+  become: true
+
+  tasks:
+    - name: Import Install Playbook
+      import_playbook: Packages.yml
+
+    - name: Import Configuration Playbook
+      import_playbook: Konfigurasi.yml

@@ -1,0 +1,51 @@
+---
+- name: Configure SNMP on AlmaLinux
+  hosts: target_hosts
+  become: true
+
+  tasks:
+    - name: Copy snmpd.conf file
+      copy:
+        src: files/snmpd.conf  # Ganti dengan jalur relatif ke file konfigurasi snmpd.conf
+        dest: /etc/snmp/snmpd.conf
+      notify: Restart SNMP Service
+
+    - name: Set timezone to Jakarta
+      timezone:
+        name: Asia/Jakarta
+
+    - name: Configure NTP servers
+      template:
+        src: templates/ntp.conf.j2  # Ganti dengan path template ntp.conf yang sesuai
+        dest: /etc/ntp.conf
+      notify: Restart NTP Service
+      
+    - name: Set MOTD
+      copy:
+        content: |
+          *******************************************************************************
+          **                            ATTENTION: SECURITY NOTICE                      **
+          **                                                                           **
+          ** This system is for authorized use only. Unauthorized access is prohibited.**
+          ** Usage may be monitored, recorded, and subject to audit.                    **
+          **                                                                           **
+          ** All activities performed on this system are logged and archived.           **
+          ** If you do not have explicit permission to access this system, please       **
+          ** disconnect immediately.                                                   **
+          **                                                                           **
+          ** This system is the property of [Your Organization Name].                   **
+          **                                                                           **
+          ** Copyright [Year] [Your Organization Name]. All rights reserved.            **
+          **                                                                           **
+          *******************************************************************************
+        dest: /etc/motd
+
+  handlers:
+    - name: Restart SNMP Service
+      systemd:
+        name: snmpd
+        state: restarted
+    - name: Restart NTP Service
+      systemd:
+        name: ntpd
+        state: restarted 
