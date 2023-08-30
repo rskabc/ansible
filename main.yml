@@ -4,9 +4,10 @@
   gather_facts: true
   tasks:
     - name: Include Packages Tasks
-      include_tasks: Packages.yml
-
+      include_tasks: files/Packages.yml
+    - name: Include Packages Chronyd
+      include_tasks: files/chronyd.yml
+#    - name: Include Packages SNMPD
+#      include_tasks: files/snmpd.yml        
     - name: Include Konfigurasi Tasks
-      include_tasks: konfigurasi.yml
-    - name: Include Handler Tasks
-      include_tasks: handler.yml    
+      include_tasks: files/konfigurasi.yml

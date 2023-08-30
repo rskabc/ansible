@@ -1,0 +1,28 @@
+---
+- name: Install and Configure SNMPD on AlmaLinux
+  hosts: your_target_servers  # Replace with your target server(s) or host group
+  become: true  # To escalate privileges
+
+  tasks:
+    - name: Install SNMPD package
+      package:
+        name: net-snmp
+        state: present
+
+    - name: Copy custom snmpd.conf
+      copy:
+        src: files/snmpd.conf  # Path to your customized snmpd.conf file on your control machine
+        dest: /etc/snmp/snmpd.conf
+      notify: Restart SNMPD
+
+    - name: Ensure SNMPD service is started and enabled
+      systemd:
+        name: snmpd
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: Restart SNMPD
+      systemd:
+        name: snmpd
+        state: restarted

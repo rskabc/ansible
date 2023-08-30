@@ -15,7 +15,6 @@
         state: present
       tags: install_epel_release
 
-    
     - name: Install Required Packages
       yum:
         name:

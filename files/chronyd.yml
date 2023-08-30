@@ -1,0 +1,23 @@
+---
+    - name: Install Chrony Package
+      yum:
+        name: chrony
+        state: present
+
+    - name: Start and Enable Chrony Service
+      systemd:
+        name: chronyd
+        enabled: yes
+        state: started
+
+    - name: Configure Chrony with NTP Pool Servers
+      lineinfile:
+        path: /etc/chrony.conf
+        line: "server id.pool.ntp.org iburst"
+        insertafter: "^# Use public servers from the pool.ntp.org project."
+      notify: Restart Chrony Service
+
+    - name: Restart Chrony Service
+      systemd:
+        name: chronyd
+        state: restarted

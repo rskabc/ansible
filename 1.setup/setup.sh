@@ -1,29 +1,18 @@
 #!/bin/bash
 
-# Check if the server.txt file exists
-if [ ! -f server.txt ]; then
-  echo "server.txt file not found."
-  exit 1
-fi
+# Read hosts from the hosts.txt file (each line in the format: IP username password)
+while IFS=' ' read -r ip username password; do
+  # Generate SSH Key Pair
+  ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ""
 
-# Loop through each line in server.txt
-while IFS= read -r line; do
-  # Split line into target host, username, and password
-  target_host=$(echo "$line" | cut -d' ' -f1)
-  target_username=$(echo "$line" | cut -d' ' -f2)
-  target_password=$(echo "$line" | cut -d' ' -f3)
+  # Copy Public Key to Target Host
+  scp ~/.ssh/id_rsa.pub "${username}@${ip}":/tmp/ansible_pubkey
 
-  echo "Setting up SSH keys for $target_username@$target_host"
+  # Append Public Key to Authorized Keys on Target Host
+  sshpass -p "${password}" ssh "${username}@${ip}" "cat /tmp/ansible_pubkey >> ~/.ssh/authorized_keys"
 
-  # Generate SSH key pair
-  ssh-keygen -t rsa
+  # Perform Keyscan to Add Host to known_hosts
+  ssh-keyscan -H ${ip} >> ~/.ssh/known_hosts
 
-  # Copy public key to target host using SSH and password
-  sshpass -p "$target_password" ssh-copy-id -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pub "$target_username@$target_host"
-
-  # Perform keyscan to add target host to known_hosts
-  ssh-keyscan "$target_host" >> ~/.ssh/known_hosts
-
-  echo "SSH key has been generated, copied to the target host, and keyscan completed for $target_username@$target_host"
-  echo "---"
-done < server.txt
+  echo "Finished setting up SSH for ${username}@${ip}"
+done < hosts.txt

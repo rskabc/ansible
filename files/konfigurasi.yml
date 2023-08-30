@@ -4,20 +4,6 @@
 #  become: true
 
 #  tasks:
-    - name: Copy snmpd.conf file
-      copy:
-        src: files/snmpd.conf  # Ganti dengan jalur relatif ke file konfigurasi snmpd.conf
-        dest: /etc/snmp/snmpd.conf
-      notify: Restart SNMP Service
-
-    - name: Configure Chrony with NTP Pool Servers
-      lineinfile:
-        path: /etc/chrony.conf
-        line: "server id.pool.ntp.org iburst"
-        insertafter: "^# Use public servers from the pool.ntp.org project."
-      notify: Restart Chrony Service
-      tags: configure_chrony
-
     - name: Set MOTD
       copy:
         content: |

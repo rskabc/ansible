@@ -1,0 +1,11 @@
+---
+- name: Install Packages and Update Repositories
+  hosts: all
+  become: true  # Menggunakan hak superuser (sudo)
+  tasks:
+    - name: Update Repositories
+      yum:
+        name: '*'
+        state: latest
+      tags: update
+
